@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center horizontally */
+  padding: 10px 20px;
+  background-color: #fff; /* white background */
+  border-bottom: 2px solid #ddd; /* subtle line under header */
+}
+
+.logo {
+  width: 500px;   /* thoda bada size */
+  height: auto;
+}
