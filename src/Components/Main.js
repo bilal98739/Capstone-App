@@ -1,24 +1,40 @@
-import React from "react";
+// src/Components/Main.js
+import React, { useReducer } from "react";
+import BookingPage from "../pages/BookingPage";
+import { fetchAPI, submitAPI } from "../api";  // ✅ yahan api import karni hai
+import { useNavigate } from "react-router-dom";
+
+// Reducer for managing available times
+const updateTimes = (state, action) => {
+  if (action.type === "UPDATE_TIMES") {
+    return fetchAPI(action.date);
+  }
+  return state;
+};
+
+// Initialize times
+const initializeTimes = () => {
+  return fetchAPI(new Date());
+};
 
 function Main() {
+  const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
+  const navigate = useNavigate();
+
+  // ✅ form submit function
+  const submitForm = (formData) => {
+    const success = submitAPI(formData);
+    if (success) {
+      navigate("/confirmed"); // redirect to confirmation page
+    }
+  };
+
   return (
-    <main className="main">
-      <section>
-        <h2>Welcome to Little Lemon</h2>
-        <p>
-          At <span>Little Lemon</span>, we serve fresh Mediterranean food with a
-          modern twist. Whether you’re here for a quick lunch or a full-course
-          dinner, we make sure your experience is unforgettable.
-        </p>
-      </section>
-      <section>
-        <h3>Reserve a Table</h3>
-        <p>
-          Book your table online and enjoy a delightful dining experience with
-          us.
-        </p>
-      </section>
-    </main>
+    <BookingPage
+      availableTimes={availableTimes}
+      dispatch={dispatch}
+      submitForm={submitForm}
+    />
   );
 }
 

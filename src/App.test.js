@@ -1,8 +1,15 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+// Mock react-router-dom so <Link> and <Router> don't break
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  BrowserRouter: ({ children }) => <div>{children}</div>,
+  Link: ({ children, to }) => <a href={to}>{children}</a>,
+}));
+
+test("renders header", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const headerElement = screen.getByText(/Header/i);
+  expect(headerElement).toBeInTheDocument();
 });
